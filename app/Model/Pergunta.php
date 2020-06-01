@@ -15,7 +15,16 @@ class Pergunta extends Model
      */
     public function Opcao()
     {
-        return $this->belongsToMany(Opcao::class, 'OpcaoPergunta');
+        return $this->belongsToMany(Opcao::class, 'opcao_pergunta');
+    }
+
+
+    /**
+     * Uma Pergunta tem um resposta_escrita;
+     */
+    public function RespostaEscrita()
+    {
+        return $this->hasOne(RespostaEscrita::class, 'id', 'resposta_escrita_id');
     }
 
     /**
@@ -33,8 +42,4 @@ class Pergunta extends Model
     {
         return $this->hasOne(Tema::class, 'id', 'tema_id');
     }
-
-    
-
-    
 }

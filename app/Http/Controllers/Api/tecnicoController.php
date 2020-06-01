@@ -74,6 +74,7 @@ class tecnicoController extends Controller
                 return response()->json(ApiError::errorMassage($e->getMesage(), 1010));
             }
             return response()->json(ApiError::errorMassage('Error ao inserir o tecnico', 1010));
+            
         }
     }
 

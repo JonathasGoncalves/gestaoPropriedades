@@ -122,8 +122,9 @@ class TanqueController extends Controller
 
     public function ListagemQualidadeGerar(Request $request)
     {
-
-        return response()->json(Excel::store(new TanquesExport($request->relatorio, $request->filtro, $request->padrao, $request->dataReferencia), 'invoices.xlsx'));
+        $criado = Excel::store(new TanquesExport($request->relatorio, $request->filtro, $request->padrao, $request->dataReferencia), 'invoices.xlsx');
+        if (!$criado) return response()->json(ApiError::errorMassage(['data' => ['msg' => 'Não foi possivel gerar o arquivo!']], 4040), 404);
+        return response()->json($criado);
         //return Response::download('storage/invoices.xlsx', 'filename.pdf');
         //return response()->download('storage/invoices.xlsx')->deleteFileAfterSend();
 
@@ -160,16 +161,15 @@ class TanqueController extends Controller
         //return $request->input('cod_tanque');
     }
 
-     /**
+    /**
      * Retorna os resourses dos tanques
      */
     public function TanqueResourceAll()
     {
-    
 
+        
         return TanqueResource::collection($this->tanque->all());
         //return $this->qualidade->where('zle_dtfim', '=', $data[0]->data)->get();
 
     }
-
 }

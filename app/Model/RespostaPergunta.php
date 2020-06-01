@@ -4,23 +4,22 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OpcaoPergunta extends Model
+class RespostaPergunta extends Model
 {
-    //
-
 
     /**
      * Esta tabela é a nxn de Pergunta par Opção. 
      */
 
-    protected $table = 'opcao_pergunta';
+    protected $table = 'resposta_pergunta';
 
     protected $fillable = [
-        'opcao_id', 'pergunta_id', 'positiva'
+        'resposta_escrita_id', 'pergunta_id'
     ];
 
+
     /**
-     * OpcaoPergunta tem uma pergunta. 
+     * resposta_escrita_pergunta tem uma pergunta. 
      */
     public function Pergunta()
     {
@@ -30,9 +29,8 @@ class OpcaoPergunta extends Model
     /**
      * OpcaoPergunta tem uma opcao. 
      */
-    public function Opcao()
+    public function RespostaEscrita()
     {
-        return $this->hasOne(Opcao::class, 'id', 'opcao_id');
+        return $this->hasOne(RespostaEscrita::class, 'id', 'resposta_escrita_id');
     }
-    
 }

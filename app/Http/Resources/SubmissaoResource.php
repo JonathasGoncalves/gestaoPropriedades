@@ -21,7 +21,9 @@ class SubmissaoResource extends JsonResource
             'qualidade'         => new QualidadeResource($this->Qualidade),
             'tanque'            => new TanqueResource($this->Tanque),
             'Respostas'         => OpcaoPerguntaResource::collection($this->OpcaoPergunta),
+            'Metas'             => OpcaoPerguntaResource::collection($this->OpcaoPerguntaMeta),
             'observacoes'       => RespostaObservacaoResource::collection($this->RespostaObservacao),
+            'RespostasEscritas' => RespostaPerguntaResource::collection($this->RespostaPergunta),
             'realizada'         => $this->realizada,
             'aproveitamento'    => $this->aproveitamento,
         ];

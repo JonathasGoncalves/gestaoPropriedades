@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableRespostaobservacao extends Migration
+class CreatePerguntaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,17 @@ class CreateTableRespostaobservacao extends Migration
      */
     public function up()
     {
-        Schema::create('respostaobservacao', function (Blueprint $table) {
-
+        Schema::create('pergunta', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
             $table->increments('id');
-            $table->string('texto_observacao')->nullable();
+            $table->string('enunciado');
+            $table->unsignedInteger('formulario_id');
             $table->unsignedInteger('tema_id');
-            $table->unsignedInteger('submissao_id');
             $table->timestamps();
 
+            $table->foreign('formulario_id')->references('id')->on('formulario');
             $table->foreign('tema_id')->references('id')->on('tema');
-            $table->foreign('submissao_id')->references('id')->on('submissao');
-
         });
     }
 
@@ -34,6 +34,6 @@ class CreateTableRespostaobservacao extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('respostaobservacao');
+        Schema::dropIfExists('pergunta');
     }
 }

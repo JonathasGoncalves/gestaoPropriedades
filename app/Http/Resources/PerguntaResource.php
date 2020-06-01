@@ -15,12 +15,13 @@ class PerguntaResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id_pergunta'   =>  $this->id,
-            'enunciado'     =>  $this->enunciado,
-            'tema'          =>  $this->tema,
-            'opcoes'        =>  OpcaoResource::collection($this->opcao),
-            'formulario'    =>  new FormularioResource($this->formulario),
-            'tema'          =>  new TemaResource($this->tema),
-            ];
+            'id_pergunta'       =>  $this->id,
+            'enunciado'         =>  $this->enunciado,
+            'tema'              =>  $this->tema,
+            'opcoes'            =>  OpcaoResource::collection($this->opcao),
+            'formulario'        =>  new FormularioResource($this->formulario),
+            'tema'              =>  new TemaResource($this->tema),
+            'respostaEscrita'   =>  new RespostaEscritaResource($this->RespostaEscrita),
+        ];
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableImagemObs extends Migration
+class CreateTemaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateTableImagemObs extends Migration
      */
     public function up()
     {
-        Schema::create('imagemObs', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('uri');
-            $table->unsignedInteger('respostaObservacao_id');
+        Schema::create('tema', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
+            $table->increments('id');
+            $table->string('nome');
             $table->timestamps();
-
-            $table->foreign('respostaObservacao_id')->references('id')->on('respostaObservacao');
         });
     }
 
@@ -30,6 +29,6 @@ class CreateTableImagemObs extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('imagemObs');
+        Schema::dropIfExists('tema');
     }
 }

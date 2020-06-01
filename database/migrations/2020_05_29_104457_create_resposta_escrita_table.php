@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableOpcao extends Migration
+class CreateRespostaEscritaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateTableOpcao extends Migration
      */
     public function up()
     {
-        Schema::create('Opcao', function (Blueprint $table) {
+        Schema::create('resposta_escrita', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
+
             $table->increments('id');
-            $table->string('nome_opcao');
+            $table->string('valor');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateTableOpcao extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Opcao');
+        Schema::dropIfExists('resposta_escrita');
     }
 }

@@ -8,7 +8,7 @@ class RespostaObservacao extends Model
 {
     //
 
-    protected $table = 'respostaobservacao';
+    protected $table = 'resposta_observacao';
 
     protected $fillable = [
         'texto_observacao', 'imagens', 'tema_id',  'submissao_id'
@@ -36,6 +36,6 @@ class RespostaObservacao extends Model
      */
     public function Imagem()
     {
-        return $this->hasMany(ImagemObs::class, 'respostaObservacao_id', 'id');
+        return $this->hasMany(ImagemObs::class, 'resposta_observacao_id', 'id');
     }
 }

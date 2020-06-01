@@ -16,7 +16,7 @@ class TanqueResource extends JsonResource
     {
         
         return [
-            'key'               => rtrim($this->Cooperado->codigo_cacal) . rtrim($this->tanque) . rtrim($this->latao),
+            //'key'               => rtrim($this->Cooperado->codigo_cacal) . rtrim($this->tanque) . rtrim($this->latao),
             'id'                => rtrim($this->id),
             'tanque'            => rtrim($this->tanque),
             'latao'             => rtrim($this->latao), 

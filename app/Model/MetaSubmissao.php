@@ -4,20 +4,20 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OpcaoPergunta_submissao extends Model
+class MetaSubmissao extends Model
 {
-    protected $table = 'opcao_pergunta_submissao';
+    //
+
+    protected $table = 'meta_submissao';
     protected $fillable = [
         'opcao_pergunta_id', 'submissao_id'
     ];
 
     /**
-     * OpcaoPergunta_submissao tem uma opcao_pergunta. (Esta tabela é a nxn de OpcaoPergunta para submissao)
+     * meta_submissao tem uma opcao_pergunta. (Esta tabela é a nxn de OpcaoPergunta para submissao representando meta)
      */
     public function OpcaoPergunta()
     {
         return $this->hasOne(OpcaoPergunta::class, 'id', 'opcao_pergunta_id');
     }
-
-    
 }

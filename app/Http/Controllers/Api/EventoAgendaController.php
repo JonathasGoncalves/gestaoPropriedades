@@ -31,7 +31,7 @@ class EventoAgendaController extends Controller
 
     public function eventosPorDia(Request $request)
     {
-        //$data = ['eventos' => $this->EventoAgenda->where('data', '>', $request->input('data'))->get()];
+        //$data = $this->EventoAgenda->where('data', '>=', $request->input('data'))->orderBy('hora')->get();
         $data = ['eventos' => EventoAgendaResource::collection($this->EventoAgenda->where('data', '>=', $request->input('data'))->orderBy('hora')->get())->groupBy('data')];
         return response()->json($data);
         //return $request->input('data');
@@ -39,7 +39,7 @@ class EventoAgendaController extends Controller
 
     public function store(Request $request)
     {
-        //não utilizado
+
         try {
 
             DB::beginTransaction();
@@ -61,7 +61,25 @@ class EventoAgendaController extends Controller
             if (config('app.debug')) {
                 return response()->json(ApiError::errorMassage($e->getMessage(), 1010));
             }
-            return response()->json(ApiError::errorMassage('Error ao inserir o evento', 1010));
+            return response()->json(ApiError::errorMassage(['data' => ['msg' => 'Error ao inserir o evento!']], 1010), 101);
         }
+    }
+
+
+    public function atualizarEvento(Request $request)
+    {
+        $evento = $this->EventoAgenda->find($request->input('evento_id'));
+        $evento->hora = $request->input('hora');
+        $evento->data = $request->input('data');
+        $evento->tecnico_id = $request->input('tecnico_id');
+        $evento->fomulario_id = $request->input('fomulario_id');
+        $evento->save();
+    }
+
+    public function excluirEvento(Request $request)
+    {
+        $evento = $this->EventoAgenda->find($request->input('evento_id'));
+
+        $evento->delete();
     }
 }

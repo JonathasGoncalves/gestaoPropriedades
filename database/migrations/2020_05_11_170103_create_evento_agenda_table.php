@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableEventoAgenda extends Migration
+class CreateEventoAgendaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,10 @@ class CreateTableEventoAgenda extends Migration
      */
     public function up()
     {
-        Schema::create('eventoAgenda', function (Blueprint $table) {
+        Schema::create('evento_agenda', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
+
             $table->increments('id');
             $table->date('data');
             $table->time('hora');
@@ -37,6 +40,6 @@ class CreateTableEventoAgenda extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('eventoAgenda');
+        Schema::dropIfExists('evento_agenda');
     }
 }

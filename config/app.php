@@ -163,7 +163,6 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         //Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-        Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*

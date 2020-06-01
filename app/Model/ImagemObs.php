@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ImagemObs extends Model
 {
-    protected $table = 'imagemobs';
+    protected $table = 'imagem_obs';
     protected $fillable = [
-        'uri', 'respostaObservacao_id'
+        'uri', 'resposta_observacao_id'
     ];
     //
 }

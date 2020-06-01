@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableTecnico extends Migration
+class CreateOpcaoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateTableTecnico extends Migration
      */
     public function up()
     {
-        Schema::create('tecnico', function (Blueprint $table) {
+        Schema::create('opcao', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
+
             $table->increments('id');
-            $table->string('nome');
-            $table->string('usuario');
-            $table->string('password');
-            $table->string('email');
+            $table->string('nome_opcao');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateTableTecnico extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tecnico');
+        Schema::dropIfExists('opcao');
     }
 }

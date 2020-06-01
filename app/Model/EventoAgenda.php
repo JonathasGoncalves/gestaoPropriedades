@@ -40,7 +40,7 @@ class EventoAgenda extends Model
         return $this->hasOne(Submissao::class, 'id', 'submissao_id');
     }
 
-    protected $table = 'eventoAgenda';
+    protected $table = 'evento_agenda';
     protected $fillable = [
         'id', 'data', 'hora', 'tecnico_id', 'fomulario_id', 'tanque_id', 'submissao_id'
     ];

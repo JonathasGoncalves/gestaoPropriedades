@@ -21,13 +21,13 @@ class PerguntaController extends Controller
    //recebe o id do tipo de formulario que foi solicitado
    public function listarPerguntas(Request $request)
    {
-
-
       $perguntas =  PerguntaResource::collection(Pergunta::where('formulario_id', $request->idFormulario)->get())->groupBy('tema_id');
 
       if (!$perguntas) return response()->json(ApiError::errorMassage(['data' => ['msg' => 'Nenhuma pergunta para esse fomulário']], 4040), 404);
       return $perguntas->toArray();
    }
+
+   
 
    //teste -- agrupar perguntas por fumulario
    public function listarPerguntasTeste()

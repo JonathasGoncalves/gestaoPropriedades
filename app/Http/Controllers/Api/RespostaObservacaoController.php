@@ -46,7 +46,7 @@ class RespostaObservacaoController extends Controller
 
         if (array_key_exists($i, $imagens)) {
             foreach ($imagens as $imagem_item) {
-                if ($imagem_item) {// && $imagem_item->isValid()
+                if ($imagem_item) { // && $imagem_item->isValid()
                     $nameFile = $imagem_item->getClientOriginalName();
                     $arrayExplode = explode("_", $nameFile);
                     $path = 'store/observacoes/' . $arrayExplode[1] . '/' .  $arrayExplode[2];

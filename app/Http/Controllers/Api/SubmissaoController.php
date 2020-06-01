@@ -12,6 +12,8 @@ use App\Model\Qualidade;
 use App\Model\Tanque;
 use App\Model\ImagemObs;
 use App\Model\Tecnico;
+use App\Model\RespostaEscrita;
+use App\Model\Opcao;
 use App\Model\RespostaObservacao;
 use App\Http\Resources\SubmissaoResource;
 use Illuminate\Support\Facades\DB;
@@ -89,25 +91,25 @@ class SubmissaoController extends Controller
             /**se não possui registro de qualidade, esta será inserido como null */
             if (!$ultima_qualidade) {
                 $nova_submissao = [
-                    'DataSubmissao' => date("y/m/d"),
+                    'DataSubmissao' => $request->input('DataSubmissao'),
                     'qualidade_id' => null,
                     'tanque_id' => $tanque->id,
                     'realizada' => 0,
                     'tecnico_id' => $tecnico->id,
-                    'aproveitamento' => 0      
+                    'aproveitamento' => 0
                 ];
             } else {
                 $nova_submissao = [
-                    'DataSubmissao' => date("y/m/d"),
+                    'DataSubmissao' => $request->input('DataSubmissao'),
                     'qualidade_id' => $ultima_qualidade->id,
                     'tanque_id' => $tanque->id,
                     'realizada' => 0,
                     'tecnico_id' => $tecnico->id,
-                    'aproveitamento' => 0 
+                    'aproveitamento' => 0
                 ];
             }
 
-          
+
 
             /**Criando a submissão e associando seus itens (OpcaoResposta) */
             //
@@ -155,13 +157,14 @@ class SubmissaoController extends Controller
     public function MarcarRealizada(Request $request)
     {
 
-        
-        
+
+
         $submissaFind = $this->submissao->find($request->input('id_submissao'));
         $submissaFind->realizada = 1;
         $submissaFind->aproveitamento = $request->input('aproveitamento');
+        $submissaFind->DataSubmissao = $request->input('DataSubmissao');
         $submissaFind->save();
-
+        return new SubmissaoResource($this->submissao->find($request->input('id_submissao')));
     }
 
     /**
@@ -235,8 +238,9 @@ class SubmissaoController extends Controller
 
         $submissao_id = $request->input('submissao_id');
         $OpcaoPergunta_itens = $request->input('OpcaoPergunta_itens');
+        $Meta_itens = $request->input('Meta_itens');
         $observacoesSub = $request->input('observacoes');
-
+        $resposta_escrita = $request->input('respostasEscritasSub');
 
 
         $submissao_find = $this->submissao->find($submissao_id);
@@ -247,13 +251,46 @@ class SubmissaoController extends Controller
             return response()->json(ApiError::errorMassage(['data' => ['msg' => 'Valor de resposta inválido']], 4422), 422);
         }
 
+        if (!$Meta_itens) return response()->json(ApiError::errorMassage(['data' => ['msg' => 'Nunhuma meta enviada']], 4040), 404);
+        if (in_array(null, $Meta_itens)) {
+            return response()->json(ApiError::errorMassage(['data' => ['msg' => 'Valor de meta inválido']], 4422), 422);
+        }
 
+        if ($submissao_find->realizada == 1)  return response()->json(ApiError::errorMassage(['data' => ['msg' => 'Esta submissão já foi realizada!']], 4090), 409);
         try {
 
             /**Criando a submissão e associando seus itens (OpcaoResposta) */
 
+
+            //return $resposta_escrita;
             DB::beginTransaction();
+
+            if ($resposta_escrita) {
+
+                $resposta_escrita_itens = array();
+                foreach ($resposta_escrita as $resposta) {
+                    $resp = Opcao::create(
+                        [
+                            'nome_opcao' => $resposta['resposta']
+                        ]
+                    );
+
+                    $resposta_pergunta = OpcaoPergunta::create(
+                        [
+                            'opcao_id'            => $resp->id,
+                            'pergunta_id'         => $resposta['pergunta_id'],
+                            'positiva'            => 1
+                        ]
+                    );
+                    array_push($OpcaoPergunta_itens, $resposta_pergunta->id);
+                }
+
+                //$submissao_find->RespostaPergunta()->attach($resposta_escrita_itens);
+            }
+
             $submissao_find->Opcaopergunta()->attach($OpcaoPergunta_itens);
+
+            $submissao_find->OpcaoperguntaMeta()->attach($Meta_itens);
 
             //return $request->all();
             $i = 0;
@@ -273,7 +310,7 @@ class SubmissaoController extends Controller
                     ImagemObs::create(
                         [
                             'uri' => $imagem,
-                            'respostaObservacao_id' => $resp->id,
+                            'resposta_observacao_id' => $resp->id,
                         ]
                     );
                 }
@@ -317,21 +354,28 @@ class SubmissaoController extends Controller
                 array_push($ids_to_delete, $resposta->id);
             }
 
-            ImagemObs::whereIn('respostaObservacao_id', $ids_to_delete)->delete();
+            ImagemObs::whereIn('resposta_observacao_id', $ids_to_delete)->delete();
 
             RespostaObservacao::where('submissao_id', $submissao_id)->delete();
 
 
             //exclui submissao
-            $submissao_del = Submissao::destroy($submissao_id);
+            //Submissao::destroy($submissao_id);
         }
 
         return response()->json(['msg' => 'Submissao excluida com sucesso!'], 201);
     }
 
-    public function UltimaSubmissao(Request $request) {
-        
-        return Submissao::where('tanque_id', $request->input('id_tanque'))->where('realizada', '=', '1')->orderBy('DataSubmissao', 'desc')->first();
+    public function UltimaSubmissao(Request $request)
+    {
+
+        $sub = $this->submissao->SubmissaoLastPorID($request->input('submissao_id'), $request->input('tanque_id'), $request->input('data_sub'), $request->input('id_form'));
+
+        if ($sub) {
+            return response()->json($sub[0]);
+        } else {
+            return response()->json(ApiError::errorMassage(['data' => ['msg' => 'Nunhuma submissão encontrada']], 4040), 404);
+        }
     }
 
     /**
@@ -339,8 +383,8 @@ class SubmissaoController extends Controller
      */
     public function SubmissaoLast(Request $request)
     {
-        
-        return $data =  $this->submissao->SubmissaoLast();
+
+        return $this->submissao->SubmissaoLast();
 
         //return 'teste';
 
@@ -348,8 +392,4 @@ class SubmissaoController extends Controller
         //return $this->qualidade->where('zle_dtfim', '=', $data[0]->data)->get();
 
     }
-
-
-    
-
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableFormulario extends Migration
+class CreateFormularioTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,9 @@ class CreateTableFormulario extends Migration
      */
     public function up()
     {
-        Schema::create('Formulario', function (Blueprint $table) {
+        Schema::create('formulario', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
             $table->increments('id');
             $table->string('Titulo');
             $table->timestamps();
@@ -27,6 +29,6 @@ class CreateTableFormulario extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Formulario');
+        Schema::dropIfExists('formulario');
     }
 }

@@ -22,13 +22,15 @@ class QualidadeController extends Controller
      */
     public function QualidadeResourcePorID(Request $request)
     {
-        //return $request->input('cod_cooperado');
-        //return $request->input('cod_cooperado');
-        $data =  $this->qualidade->UltimaQualidadePorCooperado($request->input('cod_cooperado'));
-        //return response()->json($data);
-        //return $request->input('cod_cooperado');
-        return new QualidadeResource(Qualidade::find($data->id));
-        //return $request;
+        $qualidade = null;
+        $data =  $this->qualidade->QualidadeLast();
+        $ultimaQualidade = $this->qualidade->UltimaQualidadePorCooperado($request->input('tanque'), $data[0]->data);
+
+        if ($ultimaQualidade != null) {
+            $qualidade = new QualidadeResource(Qualidade::find($ultimaQualidade->id));
+        }
+
+        return $qualidade;
     }
 
     /**
@@ -36,14 +38,8 @@ class QualidadeController extends Controller
      */
     public function QualidadeResourceLast(Request $request)
     {
-        
+
         $data =  $this->qualidade->QualidadeLast();
-
-        $qualidades  = [];
-
         return QualidadeResource::collection($this->qualidade->where('zle_dtfim', '=', $data[0]->data)->get());
-        //return $this->qualidade->where('zle_dtfim', '=', $data[0]->data)->get();
-
     }
-
 }

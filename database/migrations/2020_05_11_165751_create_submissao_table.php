@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableSubmissao extends Migration
+class CreateSubmissaoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,10 @@ class CreateTableSubmissao extends Migration
     public function up()
     {
         Schema::create('submissao', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
             $table->increments('id');
-            $table->date('DataSubmissao');
+            $table->dateTime('DataSubmissao');
             $table->integer('qualidade_id')->nullable();
             $table->integer('tanque_id');
             $table->integer('realizada');
@@ -27,7 +29,6 @@ class CreateTableSubmissao extends Migration
             $table->foreign('tanque_id')->references('id')->on('tanques');
             $table->foreign('qualidade_id')->references('id')->on('qualidade-leite');
             $table->foreign('tecnico_id')->references('id')->on('tecnico');
-
         });
     }
 

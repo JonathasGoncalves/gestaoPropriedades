@@ -9,6 +9,10 @@ class Opcao extends Model
     //
 
     protected $table = 'opcao';
+    protected $fillable = [
+        'nome_opcao'
+    ];
+
 
 
     /**
@@ -16,7 +20,7 @@ class Opcao extends Model
      */
     public function Pergunta()
     {
-        return $this->belongsToMany(Pergunta::class, 'OpcaoPergunta');
+        return $this->belongsToMany(Pergunta::class, 'opcao_pergunta');
     }
 
     

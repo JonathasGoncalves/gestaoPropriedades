@@ -18,13 +18,14 @@ class Qualidade extends Model
     }
 
     //recebe o id do cooperado e retorna o id da ultima qualidade dele
-    public function UltimaQualidadePorCooperado($cod_cooperado)
+    public function UltimaQualidadePorCooperado($tanque, $data)
     {
 
         $todos = DB::table('qualidade-leite')
             ->select('qualidade-leite.id')
             ->join('tanques', 'tanques.tanque', '=', 'qualidade-leite.tanque')
-            ->where('tanques.codigo_cacal', '=', $cod_cooperado)
+            ->where('tanques.tanque', '=', $tanque)
+            ->where('qualidade-leite.zle_dtfim', '=', $data)
             ->orderBy('qualidade-leite.zle_dtfim', 'desc')
             ->first();
 
@@ -32,7 +33,7 @@ class Qualidade extends Model
     }
 
     //retorna a ultima qualidade de cada tanque
-    public function QualidadeLast() 
+    public function QualidadeLast()
     {
 
         $ultimaData = DB::table('qualidade-leite')
@@ -41,5 +42,4 @@ class Qualidade extends Model
 
         return $ultimaData;
     }
-
 }
