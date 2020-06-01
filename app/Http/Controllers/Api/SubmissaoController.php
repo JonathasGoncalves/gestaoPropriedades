@@ -392,4 +392,10 @@ class SubmissaoController extends Controller
         //return $this->qualidade->where('zle_dtfim', '=', $data[0]->data)->get();
 
     }
+
+    public function testeResource()
+    {
+
+        return new SubmissaoResource($this->submissao->find(9));
+    }
 }

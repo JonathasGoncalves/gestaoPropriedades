@@ -18,11 +18,12 @@ class CreateOpcaoPerguntaSubmissaoTable extends Migration
             $table->charset = 'utf8mb4';
 
             $table->increments('id');
-            $table->unsignedInteger('opcao_pergunta_id');
+            $table->unsignedInteger('pergunta_id');
             $table->unsignedInteger('submissao_id');
+            $table->unsignedInteger('resposta_valor');
             $table->timestamps();
 
-            $table->foreign('opcao_pergunta_id')->references('id')->on('opcao_pergunta');
+            $table->foreign('pergunta_id')->references('id')->on('pergunta');
             $table->foreign('submissao_id')->references('id')->on('submissao');
         });
     }

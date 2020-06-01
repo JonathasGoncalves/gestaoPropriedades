@@ -46,8 +46,6 @@ Route::middleware('jwt.auth')->namespace('Api')->name('api.')->group(function ()
         Route::post('/QualidadePorId', 'QualidadeController@QualidadeResourcePorID')->name('index_QualidadeResourcePorID');
         //Lista as ultimas qualidades
         Route::get('/QualidadeLast', 'QualidadeController@QualidadeResourceLast')->name('index_QualidadeLast');
-
-
     });
 
     Route::prefix('submissao')->group(function () {
@@ -69,9 +67,11 @@ Route::middleware('jwt.auth')->namespace('Api')->name('api.')->group(function ()
         Route::post('/ultimaSubmissao', 'SubmissaoController@UltimaSubmissao')->name('UltimaSubmissao');
         //ultima submissao OFFLINE
         Route::get('/ultimaSubmissaoOFF', 'SubmissaoController@SubmissaoLast')->name('ultimaSubmissaoOFF');
-        
+
+        //teste
+        Route::get('/testeResource', 'SubmissaoController@testeResource')->name('testeResource');
     });
-    
+
     Route::prefix('tanque')->group(function () {
         //Lista os tanques
         Route::get('/', 'TanqueController@index')->name('index_tanque');
@@ -88,12 +88,11 @@ Route::middleware('jwt.auth')->namespace('Api')->name('api.')->group(function ()
         Route::post('/tanquePorId', 'TanqueController@TanqueResourcePorID')->name('tanque_resource');
         //TanqueResource 
         Route::get('/tanqueAll', 'TanqueController@TanqueResourceAll')->name('tanque_resourceAll');
-        
+
         //retorna arquivo excel gerado na "ListagemQualidadeGerar"
         Route::get('/todosExcel', 'TanqueController@ListagemQualidadeEnviar')->name('tanque_cbt');
         //Gera arquivo excel com todos os cooperados dentro dos parametros do request
         Route::post('/todos', 'TanqueController@ListagemQualidadeGerar')->name('tanque_cbt');
-
     });
 
     Route::prefix('formulario')->group(function () {
@@ -123,13 +122,13 @@ Route::middleware('jwt.auth')->namespace('Api')->name('api.')->group(function ()
         //Retorna a opcãoPergunta. Recebe uma opcao e uma pergunta
         Route::post('/OpcaoPerguntaFind', 'OpcaoPerguntaController@OpcaoPerguntaFind')->name('index');
         //Retorna todos opcaoPergunta
-        Route::get('/OpcaoPerguntaAll', 'OpcaoPerguntaController@OpcaoPerguntaALL')->name('OpcaoPerguntaALL'); 
+        Route::get('/OpcaoPerguntaAll', 'OpcaoPerguntaController@OpcaoPerguntaALL')->name('OpcaoPerguntaALL');
         //Retorna opcaoPergunta por ID recebido
         Route::post('/OpcaoPerguntaByID', 'OpcaoPerguntaController@OpcaoPerguntaByID')->name('OpcaoPerguntaByID');
     });
 
 
-    
+
 
     Route::prefix('observacao')->group(function () {
 
@@ -155,14 +154,13 @@ Route::middleware('jwt.auth')->namespace('Api')->name('api.')->group(function ()
 
     //Login
     Route::prefix('tecnico')->group(function () {
-        Route::get('/all', 'tecnicoController@index')->name('all'); 
+        Route::get('/all', 'tecnicoController@index')->name('all');
         Route::get('/refreshToken', 'AuthenticateController@refresh')->name('refresh');
     });
-
 });
 
 
-    
+
 Route::namespace('Api')->name('api.')->group(function () {
     //Login
     Route::prefix('autenticacao')->group(function () {
@@ -173,8 +171,4 @@ Route::namespace('Api')->name('api.')->group(function () {
     Route::prefix('tecnico')->group(function () {
         Route::post('/', 'tecnicoController@store')->name('novo_tecnico');
     });
-    
-    
-
-    
 });

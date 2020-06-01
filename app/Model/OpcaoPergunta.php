@@ -34,5 +34,11 @@ class OpcaoPergunta extends Model
     {
         return $this->hasOne(Opcao::class, 'id', 'opcao_id');
     }
-    
+
+
+    //lista todas opcoes_perguntas de Uma submissao 
+    public function OpcaoPerguntaPorSubmissao()
+    {
+        return true;
+    }
 }
