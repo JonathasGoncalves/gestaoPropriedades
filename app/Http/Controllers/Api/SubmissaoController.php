@@ -13,7 +13,7 @@ use App\Model\Tanque;
 use App\Model\ImagemObs;
 use App\Model\Tecnico;
 use App\Model\RespostaEscrita;
-use App\Model\Opcao;
+use App\Model\RespostaPergunta;
 use App\Model\RespostaObservacao;
 use App\Http\Resources\SubmissaoResource;
 use Illuminate\Support\Facades\DB;
@@ -93,6 +93,7 @@ class SubmissaoController extends Controller
                 $nova_submissao = [
                     'DataSubmissao' => $request->input('DataSubmissao'),
                     'qualidade_id' => null,
+                    'projeto_id' => $request->input('projeto_id'),
                     'tanque_id' => $tanque->id,
                     'realizada' => 0,
                     'tecnico_id' => $tecnico->id,
@@ -102,6 +103,7 @@ class SubmissaoController extends Controller
                 $nova_submissao = [
                     'DataSubmissao' => $request->input('DataSubmissao'),
                     'qualidade_id' => $ultima_qualidade->id,
+                    'projeto_id' => $request->input('projeto_id'),
                     'tanque_id' => $tanque->id,
                     'realizada' => 0,
                     'tecnico_id' => $tecnico->id,
@@ -238,9 +240,9 @@ class SubmissaoController extends Controller
 
         $submissao_id = $request->input('submissao_id');
         $OpcaoPergunta_itens = $request->input('OpcaoPergunta_itens');
-        $Meta_itens = $request->input('Meta_itens');
+        //$Meta_itens = $request->input('Meta_itens');
         $observacoesSub = $request->input('observacoes');
-        $resposta_escrita = $request->input('respostasEscritasSub');
+        //$resposta_escrita = $request->input('respostasEscritasSub');
 
 
         $submissao_find = $this->submissao->find($submissao_id);
@@ -251,10 +253,10 @@ class SubmissaoController extends Controller
             return response()->json(ApiError::errorMassage(['data' => ['msg' => 'Valor de resposta inválido']], 4422), 422);
         }
 
-        if (!$Meta_itens) return response()->json(ApiError::errorMassage(['data' => ['msg' => 'Nunhuma meta enviada']], 4040), 404);
+        /*if (!$Meta_itens) return response()->json(ApiError::errorMassage(['data' => ['msg' => 'Nunhuma meta enviada']], 4040), 404);
         if (in_array(null, $Meta_itens)) {
             return response()->json(ApiError::errorMassage(['data' => ['msg' => 'Valor de meta inválido']], 4422), 422);
-        }
+        }*/
 
         if ($submissao_find->realizada == 1)  return response()->json(ApiError::errorMassage(['data' => ['msg' => 'Esta submissão já foi realizada!']], 4090), 409);
         try {
@@ -265,32 +267,31 @@ class SubmissaoController extends Controller
             //return $resposta_escrita;
             DB::beginTransaction();
 
-            if ($resposta_escrita) {
+            /*if ($resposta_escrita) {
 
                 $resposta_escrita_itens = array();
                 foreach ($resposta_escrita as $resposta) {
-                    $resp = Opcao::create(
+                    $resp = RespostaEscrita::create(
                         [
-                            'nome_opcao' => $resposta['resposta']
+                            'valor' => $resposta['resposta']
                         ]
                     );
 
-                    $resposta_pergunta = OpcaoPergunta::create(
+                    $resposta_pergunta = RespostaPergunta::create(
                         [
-                            'opcao_id'            => $resp->id,
-                            'pergunta_id'         => $resposta['pergunta_id'],
-                            'positiva'            => 1
+                            'resposta_escrita_id' => $resp->id,
+                            'pergunta_id'         => $resposta['pergunta_id']
                         ]
                     );
-                    array_push($OpcaoPergunta_itens, $resposta_pergunta->id);
+                    array_push($resposta_escrita_itens, $resposta_pergunta->id);
                 }
 
-                //$submissao_find->RespostaPergunta()->attach($resposta_escrita_itens);
-            }
+                $submissao_find->RespostaPergunta()->attach($resposta_escrita_itens);
+            }*/
 
             $submissao_find->Opcaopergunta()->attach($OpcaoPergunta_itens);
 
-            $submissao_find->OpcaoperguntaMeta()->attach($Meta_itens);
+            //$submissao_find->OpcaoperguntaMeta()->attach($Meta_itens);
 
             //return $request->all();
             $i = 0;
@@ -391,11 +392,5 @@ class SubmissaoController extends Controller
         //return QualidadeResource::collection($this->qualidade->where('zle_dtfim', '=', $data[0]->data)->get());
         //return $this->qualidade->where('zle_dtfim', '=', $data[0]->data)->get();
 
-    }
-
-    public function testeResource()
-    {
-
-        return new SubmissaoResource($this->submissao->find(9));
     }
 }

@@ -64,6 +64,14 @@ class Submissao extends Model
         return $this->hasOne(Tecnico::class, 'id', 'tecnico_id');
     }
 
+    /**
+     * Submissao tem um tanque
+     */
+    public function Projeto()
+    {
+        return $this->hasOne(Projeto::class, 'id', 'projeto_id');
+    }
+
     //retorna a ultima submissao de cada tanque, para realizar a comparação com a submissao atuaç
     public function SubmissaoLast()
     {
@@ -112,6 +120,6 @@ class Submissao extends Model
 
     protected $table = 'submissao';
     protected $fillable = [
-        'DataSubmissao', 'qualidade_id', 'tanque_id', 'tecnico_id', 'realizada', 'aproveitamento'
+        'DataSubmissao', 'qualidade_id', 'tanque_id', 'tecnico_id', 'realizada', 'aproveitamento', 'projeto_id'
     ];
 }

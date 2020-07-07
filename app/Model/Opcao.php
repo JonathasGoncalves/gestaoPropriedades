@@ -9,10 +9,6 @@ class Opcao extends Model
     //
 
     protected $table = 'opcao';
-    protected $fillable = [
-        'nome_opcao'
-    ];
-
 
 
     /**

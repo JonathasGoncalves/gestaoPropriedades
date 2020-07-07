@@ -15,10 +15,6 @@ class OpcaoPergunta extends Model
 
     protected $table = 'opcao_pergunta';
 
-    protected $fillable = [
-        'opcao_id', 'pergunta_id', 'positiva'
-    ];
-
     /**
      * OpcaoPergunta tem uma pergunta. 
      */
@@ -34,11 +30,5 @@ class OpcaoPergunta extends Model
     {
         return $this->hasOne(Opcao::class, 'id', 'opcao_id');
     }
-
-
-    //lista todas opcoes_perguntas de Uma submissao 
-    public function OpcaoPerguntaPorSubmissao()
-    {
-        return true;
-    }
+    
 }

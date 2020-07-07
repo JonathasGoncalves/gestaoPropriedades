@@ -27,8 +27,6 @@ class PerguntaController extends Controller
       return $perguntas->toArray();
    }
 
-   
-
    //teste -- agrupar perguntas por fumulario
    public function listarPerguntasTeste()
    {

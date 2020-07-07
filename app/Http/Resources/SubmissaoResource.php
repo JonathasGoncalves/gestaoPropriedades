@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources;
 
-
-use App\Model\OpcaoPergunta_submissao;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SubmissaoResource extends JsonResource
@@ -22,11 +20,10 @@ class SubmissaoResource extends JsonResource
             'DataSubmissao'     => $this->DataSubmissao,
             'qualidade'         => new QualidadeResource($this->Qualidade),
             'tanque'            => new TanqueResource($this->Tanque),
-            //'Respostas'         => OpcaoPerguntaResource::collection($this->OpcaoPergunta),
+            'Respostas'         => OpcaoPerguntaResource::collection($this->OpcaoPergunta),
             'Metas'             => OpcaoPerguntaResource::collection($this->OpcaoPerguntaMeta),
             'observacoes'       => RespostaObservacaoResource::collection($this->RespostaObservacao),
-            //'RespostasEscritas' => RespostaPerguntaResource::collection($this->RespostaPergunta),
-            'OPS'               => OpcaoPergunta_SubmissaoResource::collection(OpcaoPergunta_Submissao::where('submissao_id', $this->id)->get()),
+            'RespostasEscritas' => RespostaPerguntaResource::collection($this->RespostaPergunta),
             'realizada'         => $this->realizada,
             'aproveitamento'    => $this->aproveitamento,
         ];

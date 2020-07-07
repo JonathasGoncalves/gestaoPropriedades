@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Model\Submissao;
 
 class EventoAgendaResource extends JsonResource
 {
@@ -24,8 +23,7 @@ class EventoAgendaResource extends JsonResource
             'tecnico'           => new TecnicoResource($this->tecnico),
             'formulario'        => new FormularioResource($this->formulario),
             'tanque'            => new TanqueResource($this->Tanque),
-            //'submissao'         => new SubmissaoResource($this->Submissao),
-            'submissao'         => Submissao::find($this->Submissao),
+            'submissao'         => new SubmissaoResource($this->Submissao),
         ];
     }
 }

@@ -15,8 +15,8 @@ class OpcaoPergunta_SubmissaoResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'opcao_pergunta' => OpcaoPerguntaResource::collection($this->OpcaoPergunta),
+            'id' => $this->id, 
+            //'opcao_pergunta' => new OpcaoPerguntaResource($this->OpcaoPergunta),  
         ];
     }
 }

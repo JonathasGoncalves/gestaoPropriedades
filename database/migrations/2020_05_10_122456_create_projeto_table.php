@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOpcaoPerguntaSubmissaoTable extends Migration
+class CreateProjetoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,13 @@ class CreateOpcaoPerguntaSubmissaoTable extends Migration
      */
     public function up()
     {
-        Schema::create('opcao_pergunta_submissao', function (Blueprint $table) {
+        Schema::create('projeto', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->charset = 'utf8mb4';
-
             $table->increments('id');
-            $table->unsignedInteger('opcao_pergunta_id');
-            $table->unsignedInteger('submissao_id');
+            $table->string('nome');
+            $table->integer('aberto'); //0 fechado, 1 aberto
             $table->timestamps();
-
-            $table->foreign('opcao_pergunta_id')->references('id')->on('opcao_pergunta');
-            $table->foreign('submissao_id')->references('id')->on('submissao');
         });
     }
 
@@ -34,6 +30,6 @@ class CreateOpcaoPerguntaSubmissaoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('opcao_pergunta_submissao');
+        Schema::dropIfExists('projeto');
     }
 }
